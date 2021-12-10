@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
+const secureApp = require('helmet');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -9,13 +10,18 @@ mongoose.connect('mongodb://localhost/nodejsapistarter')
 
 const app = express();
 
+const deckRoute = require('./routes/deck');
 const useRoute = require('./routes/user');
+
+//Helmet
+app.use(secureApp())
 
 //Middleware
 app.use(logger('dev'))
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
 //Routes
+app.use('/decks', deckRoute)
 app.use('/users', useRoute)
 
 //Routes
